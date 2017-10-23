@@ -11,7 +11,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 version=$1
-dockerfile_version=$(grep TERRAFORM_VERSION= ${base}/Dockerfile-light | cut -d= -f2)
+dockerfile_version=$(grep TERRAFORM_VERSION= ${base}/Dockerfile-full | cut -d= -f2)
 
 if [[ $version != $dockerfile_version ]]; then
     echo "Version mismatch in 'Dockerfile-light'"
@@ -21,13 +21,12 @@ if [[ $version != $dockerfile_version ]]; then
 fi
 
 echo "Building docker images for terraform ${version}..."
-docker build -f "${base}/Dockerfile-full" -t hashicorp/terraform:full .
-docker build -f "${base}/Dockerfile-light" -t hashicorp/terraform:light .
-docker tag hashicorp/terraform:light hashicorp/terraform:${version}
-docker tag hashicorp/terraform:light hashicorp/terraform:latest
+docker build -f "${base}/Dockerfile-full" -t gobinaris/terraform:full .
+# docker build -f "${base}/Dockerfile-light" -t gobinaris/terraform:light .
+docker tag gobinaris/terraform:full gobinaris/terraform:${version}
+docker tag gobinaris/terraform:full gobinaris/terraform:latest
 
 echo "Uploading docker images for terraform ${version}..."
-docker push hashicorp/terraform:${version}
-docker push hashicorp/terraform:latest
-docker push hashicorp/terraform:light
-docker push hashicorp/terraform:full
+docker push gobinaris/terraform:${version}
+docker push gobinaris/terraform:latest
+docker push gobinaris/terraform:full
